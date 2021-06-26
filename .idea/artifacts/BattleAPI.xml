@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BattleAPI">
+    <output-path>$PROJECT_DIR$/out/artifacts/BattleAPI</output-path>
+    <root id="archive" name="BattleAPI.jar">
+      <element id="module-output" name="APISrc" />
+    </root>
+  </artifact>
+</component>
