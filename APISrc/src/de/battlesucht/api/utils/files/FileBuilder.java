@@ -1,5 +1,7 @@
 package de.battlesucht.api.utils.files;
 
+import de.battlesucht.api.utils.server.Console;
+import de.battlesucht.api.utils.server.ConsoleClassType;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -27,7 +29,7 @@ public class FileBuilder {
         try {
             yml.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            new Console(e.getMessage(), ConsoleClassType.FileBuilder);
         }
     }
 

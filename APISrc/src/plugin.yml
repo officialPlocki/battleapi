@@ -1,0 +1,33 @@
+main: de.battlesucht.api.BattleAPI
+authors:
+  - BattleSucht Development
+  - plocki (https://plocki.xyz/)
+softdepend:
+  - Vault
+api-version: 1.13
+name: BattleAPI
+load: STARTUP
+prefix: BattleAPI
+version: 1.0
+commands:
+  money:
+  euro:
+  dollar:
+  balance:
+  geld:
+  bal:
+  bargeld:
+  pay:
+  zahlen:
+  battleapi:
+  bapi:
+  api:
+  bits:
+  bit:
+  ecoadminmoney:
+  eam:
+  ecoadminbits:
+  eab:
+  gm:
+  gamemode:
+  gamem:
