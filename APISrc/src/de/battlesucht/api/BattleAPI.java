@@ -51,7 +51,7 @@ public class BattleAPI extends JavaPlugin {
         CoinsAPI.setup();
         registerEconomy();
         MySQLService service = new MySQLService();
-        MySQLService.connect(yml.getString("mysql.host"), yml.getString("mysql.user"), yml.getString("mysql.database"), yml.getString("mysql.password"), yml.getString("mysql.user"));
+        MySQLService.connect(yml.getString("mysql.host"), yml.getString("mysql.user"), yml.getString("mysql.database"), yml.getString("mysql.password"), yml.getString("mysql.port"));
         if(!MySQLService.isConnected()) {
             new Console("MySQL ist nicht verbunden. API wird deaktiviert.", "BattleAPI.java");
             Bukkit.getPluginManager().disablePlugin(this);
