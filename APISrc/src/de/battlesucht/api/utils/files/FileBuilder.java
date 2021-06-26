@@ -13,7 +13,11 @@ public class FileBuilder {
     private YamlConfiguration yml;
 
     public FileBuilder(String path) {
-        file = new File(path);
+        String s = path;
+        if(!s.contains("plugins/")){
+            s = "plugins/API/"+path;
+        }
+        file = new File(s);
         yml = YamlConfiguration.loadConfiguration(file);
     }
 

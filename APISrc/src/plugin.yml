@@ -8,7 +8,7 @@ api-version: 1.13
 name: BattleAPI
 load: STARTUP
 prefix: BattleAPI
-version: 1.0.1
+version: 1.0.3
 commands:
   money:
   euro:

@@ -51,16 +51,16 @@ public class BattleAPI extends JavaPlugin {
         CoinsAPI.setup();
         registerEconomy();
         MySQLService service = new MySQLService();
+        MySQLService.connect(yml.getString("mysql.host"), yml.getString("mysql.user"), yml.getString("mysql.database"), yml.getString("mysql.password"), yml.getString("mysql.user"));
+        if(!MySQLService.isConnected()) {
+            new Console("MySQL ist nicht verbunden. API wird deaktiviert.", "BattleAPI.java");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
         try {
             PreparedStatement ps = service.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS bits(playerBits int(16), UUID varchar(36))");
             service.executeUpdate(ps);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
-        MySQLService.connect(yml.getString("mysql.host"), yml.getString("mysql.user"), yml.getString("mysql.database"), yml.getString("mysql.password"), yml.getString("mysql.user"));
-        if(!MySQLService.isConnected()) {
-            new Console("MySQL ist nicht verbunden. API wird deaktiviert.", "BattleAPI.java");
-            Bukkit.getPluginManager().disablePlugin(this);
         }
         MySQLService.setMaxConnections();
         PermissionManager permissionManager = new PermissionManager("BattleAPI");
@@ -78,12 +78,10 @@ public class BattleAPI extends JavaPlugin {
             yml.set("command.activated.money", false);
             fb.save();
         }
-
         if(yml.getBoolean("command.activated.pay")) {
             getCommand("pay").setExecutor(new PayCommand());
             getCommand("zahlen").setExecutor(new PayCommand());
         }
-
         if(yml.getBoolean("command.activated.money")) {
             getCommand("money").setExecutor(new MoneyCommand());
             getCommand("euro").setExecutor(new MoneyCommand());
@@ -93,7 +91,6 @@ public class BattleAPI extends JavaPlugin {
             getCommand("geld").setExecutor(new MoneyCommand());
             getCommand("bargeld").setExecutor(new MoneyCommand());
         }
-
         getCommand("battleapi").setExecutor(new BattleAPICommand());
         getCommand("bapi").setExecutor(new BattleAPICommand());
         getCommand("api").setExecutor(new BattleAPICommand());
@@ -117,7 +114,6 @@ public class BattleAPI extends JavaPlugin {
         return pl;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     private void registerEconomy() {
         if (this.getServer().getPluginManager().getPlugin("Vault") != null) {
             final ServicesManager sm = this.getServer().getServicesManager();

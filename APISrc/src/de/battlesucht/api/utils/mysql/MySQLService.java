@@ -28,6 +28,7 @@ public class MySQLService {
         }
 
     }
+
     public static void disconnect(){
         if(isConnected()){
             try {
@@ -39,6 +40,7 @@ public class MySQLService {
             new Console("MySQL ist nicht verbunden.", ConsoleClassType.MySQL);
         }
     }
+
     public static boolean isConnected(){
         return (con ==null ? false : true);
     }
