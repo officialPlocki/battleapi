@@ -10,18 +10,17 @@ import de.battlesucht.api.utils.events.Quit;
 import de.battlesucht.api.utils.files.FileBuilder;
 import de.battlesucht.api.utils.mysql.MySQLService;
 import de.battlesucht.api.utils.server.Console;
-import de.battlesucht.api.utils.server.ConsoleClassType;
 import de.battlesucht.api.utils.server.local.CoinsAPI;
+import de.battlesucht.api.utils.server.local.VaultEconomy;
 import de.battlesucht.api.utils.server.plugin.ListenerManager;
 import de.battlesucht.api.utils.server.plugin.PermissionManager;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.sql.PreparedStatement;
-import java.util.HashMap;
 
 public class BattleAPI extends JavaPlugin {
     private static Plugin pl;
@@ -66,7 +65,6 @@ public class BattleAPI extends JavaPlugin {
         permissionManager.addPermission("battleapi.ecoadminbits");
         permissionManager.addPermission("battleapi.ecoadminmoney");
         permissionManager.build();
-
         if(!yml.isSet("command.activated.pay")) {
             yml.set("command.activated.pay", false);
             yml.set("command.activated.money", false);
@@ -87,6 +85,7 @@ public class BattleAPI extends JavaPlugin {
             getCommand("geld").setExecutor(new MoneyCommand());
             getCommand("bargeld").setExecutor(new MoneyCommand());
         }
+
         getCommand("battleapi").setExecutor(new BattleAPICommand());
         getCommand("bapi").setExecutor(new BattleAPICommand());
         getCommand("api").setExecutor(new BattleAPICommand());
@@ -110,4 +109,14 @@ public class BattleAPI extends JavaPlugin {
         return pl;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private void registerEconomy() {
+        if (this.getServer().getPluginManager().getPlugin("Vault") != null) {
+            final ServicesManager sm = this.getServer().getServicesManager();
+            sm.register((Class) Economy.class, (Object)new VaultEconomy(), (Plugin)this, ServicePriority.Highest);
+        }
+        else {
+            System.out.println("Vault not found.");
+        }
+    }
 }
