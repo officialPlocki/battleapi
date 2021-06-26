@@ -22,6 +22,9 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class BattleAPI extends JavaPlugin {
     private static Plugin pl;
 
@@ -48,8 +51,12 @@ public class BattleAPI extends JavaPlugin {
         CoinsAPI.setup();
         registerEconomy();
         MySQLService service = new MySQLService();
-        service.prepareStatement("CREATE TABLE IF NOT EXISTS bits(playerBits int(16), UUID varchar(36))");
-        service.executeUpdate();
+        try {
+            PreparedStatement ps = service.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS bits(playerBits int(16), UUID varchar(36))");
+            service.executeUpdate(ps);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         MySQLService.connect(yml.getString("mysql.host"), yml.getString("mysql.user"), yml.getString("mysql.database"), yml.getString("mysql.password"), yml.getString("mysql.user"));
         if(!MySQLService.isConnected()) {
             new Console("MySQL ist nicht verbunden. API wird deaktiviert.", "BattleAPI.java");
