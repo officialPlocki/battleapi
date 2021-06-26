@@ -46,6 +46,7 @@ public class BattleAPI extends JavaPlugin {
         new ListenerManager(new Join()).registerListener();
         new ListenerManager(new Quit()).registerListener();
         CoinsAPI.setup();
+        registerEconomy();
         MySQLService service = new MySQLService();
         service.prepareStatement("CREATE TABLE IF NOT EXISTS bits(playerBits int(16), UUID varchar(36))");
         service.executeUpdate();
