@@ -47,32 +47,22 @@ public class MySQLService {
 
     private PreparedStatement ps;
 
-    public PreparedStatement prepareStatement(String sql) {
-        try {
-            ps = con.prepareStatement(sql);
-        } catch (SQLException throwables) {
-            new Console(throwables.getMessage(), ConsoleClassType.MySQL);
-        }
-        return ps;
+    public Connection getConnection() {
+        return con;
     }
 
-    public MySQLService updateStatement(PreparedStatement preparedStatement) {
-        ps = preparedStatement;
-        return this;
-    }
-
-    public ResultSet getResult() {
+    public ResultSet getResult(PreparedStatement sql) {
         try {
-            return ps.executeQuery();
+            return sql.executeQuery();
         } catch (SQLException throwables) {
             new Console(throwables.getMessage(), ConsoleClassType.MySQL);
         }
         return null;
     }
 
-    public void executeUpdate() {
+    public void executeUpdate(PreparedStatement sql) {
         try {
-            ps.executeUpdate();
+            sql.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

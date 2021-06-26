@@ -114,10 +114,10 @@ public class BattleAPI extends JavaPlugin {
     private void registerEconomy() {
         if (this.getServer().getPluginManager().getPlugin("Vault") != null) {
             final ServicesManager sm = this.getServer().getServicesManager();
-            sm.register((Class) Economy.class, (Object)new VaultEconomy(), (Plugin)this, ServicePriority.Highest);
-        }
-        else {
+            sm.register(Economy.class, new VaultEconomy(), this, ServicePriority.Highest);
+        } else {
             System.out.println("Vault not found.");
         }
     }
+
 }
