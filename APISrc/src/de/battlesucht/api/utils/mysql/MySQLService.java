@@ -10,9 +10,10 @@ public class MySQLService {
     public static void connect(String host, String user, String database, String password, String port){
         if(isConnected()){
             new Console("MySQL ist bereits verbunden.", ConsoleClassType.MySQL);
+            return;
         }
         try {
-            con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?user=" + user + "&password=" + password + "&autoReconnect=true");
+            con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/"+database, user, password);
         } catch (SQLException throwables) {
             new Console(throwables.getMessage(), ConsoleClassType.MySQL);
         }
@@ -23,10 +24,8 @@ public class MySQLService {
             PreparedStatement st = con.prepareStatement("SET GLOBAL MAX_CONNECTIONS = 500");
             st.executeUpdate();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
     public static void disconnect(){

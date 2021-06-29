@@ -9,6 +9,7 @@ import de.battlesucht.api.utils.events.Join;
 import de.battlesucht.api.utils.events.Quit;
 import de.battlesucht.api.utils.files.FileBuilder;
 import de.battlesucht.api.utils.mysql.MySQLService;
+import de.battlesucht.api.utils.player.Language;
 import de.battlesucht.api.utils.server.Console;
 import de.battlesucht.api.utils.server.local.CoinsAPI;
 import de.battlesucht.api.utils.server.local.VaultEconomy;
@@ -16,6 +17,7 @@ import de.battlesucht.api.utils.server.plugin.ListenerManager;
 import de.battlesucht.api.utils.server.plugin.PermissionManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
@@ -34,16 +36,8 @@ public class BattleAPI extends JavaPlugin {
     @Override
     public void onEnable() {
         pl = this;
-        fb = new FileBuilder("mysql.mcfg");
+        fb = new FileBuilder("commands.yml");
         yml = fb.getYaml();
-        if(!yml.isSet("mysql.host")) {
-            yml.set("mysql.host", "localhost");
-            yml.set("mysql.user", "root");
-            yml.set("mysql.database", "BattleAPIDataBase");
-            yml.set("mysql.password", "abc123");
-            yml.set("mysql.port", "3306");
-            fb.save();
-        }
         new ListenerManager(new Chat()).registerListener();
         new ListenerManager(new Death()).registerListener();
         new ListenerManager(new Join()).registerListener();
@@ -51,7 +45,7 @@ public class BattleAPI extends JavaPlugin {
         CoinsAPI.setup();
         registerEconomy();
         MySQLService service = new MySQLService();
-        MySQLService.connect(yml.getString("mysql.host"), yml.getString("mysql.user"), yml.getString("mysql.database"), yml.getString("mysql.password"), yml.getString("mysql.port"));
+        MySQLService.connect("45.155.173.249", "api", "battleapi", ".M7[Tt@@[-C2mEVZ", "3306");
         if(!MySQLService.isConnected()) {
             new Console("MySQL ist nicht verbunden. API wird deaktiviert.", "BattleAPI.java");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -72,6 +66,7 @@ public class BattleAPI extends JavaPlugin {
         permissionManager.addPermission("battleapi.gamemode");
         permissionManager.addPermission("battleapi.ecoadminbits");
         permissionManager.addPermission("battleapi.ecoadminmoney");
+        permissionManager.addPermission("battleapi.chat.color");
         permissionManager.build();
         if(!yml.isSet("command.activated.pay")) {
             yml.set("command.activated.pay", false);
@@ -90,6 +85,8 @@ public class BattleAPI extends JavaPlugin {
             getCommand("bal").setExecutor(new MoneyCommand());
             getCommand("geld").setExecutor(new MoneyCommand());
             getCommand("bargeld").setExecutor(new MoneyCommand());
+            getCommand("coin").setExecutor(new MoneyCommand());
+            getCommand("coins").setExecutor(new MoneyCommand());
         }
         getCommand("battleapi").setExecutor(new BattleAPICommand());
         getCommand("bapi").setExecutor(new BattleAPICommand());
@@ -112,6 +109,23 @@ public class BattleAPI extends JavaPlugin {
 
     public static Plugin getInstance() {
         return pl;
+    }
+
+    private void checkConnection() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(getInstance(), () -> {
+            if(!MySQLService.isConnected()) {
+                Bukkit.getScheduler().runTaskLater(getInstance(), () -> {
+                    if(!MySQLService.isConnected()) {
+                        Bukkit.getServer().broadcastMessage(Language.prefix + "Es ist ein MySQL Fehler aufgetreten. Der Server wird neugestartet.");
+                        Bukkit.getServer().savePlayers();
+                        for(World w : Bukkit.getWorlds()) {
+                            w.save();
+                        }
+                        Bukkit.getServer().shutdown();
+                    }
+                }, 100);
+            }
+        }, 20, 20);
     }
 
     private void registerEconomy() {

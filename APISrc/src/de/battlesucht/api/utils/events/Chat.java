@@ -10,10 +10,10 @@ public class Chat implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        if(e.getPlayer().hasPermission("refluxo.chat.color")) {
-            e.setFormat(ChatColor.translateAlternateColorCodes('§', new BattlePlayer(e.getPlayer()).getPrefix()) + e.getPlayer().getName() + ": " + ChatColor.translateAlternateColorCodes('&', e.getMessage()));
+        if(e.getPlayer().hasPermission("battleapi.chat.color")) {
+            e.setFormat(ChatColor.translateAlternateColorCodes('§', new BattlePlayer(e.getPlayer()).getPrefix()) + e.getPlayer().getName() + new BattlePlayer(e.getPlayer()).getSuffix() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + ChatColor.translateAlternateColorCodes('&', e.getMessage()));
         } else {
-            e.setFormat(ChatColor.translateAlternateColorCodes('§', new BattlePlayer(e.getPlayer()).getPrefix()) + e.getPlayer().getName() + ": " + e.getMessage());
+            e.setFormat(ChatColor.translateAlternateColorCodes('§', new BattlePlayer(e.getPlayer()).getPrefix()) + e.getPlayer().getName() + ChatColor.DARK_GRAY + " » " + ChatColor.GRAY + e.getMessage());
         }
     }
 
