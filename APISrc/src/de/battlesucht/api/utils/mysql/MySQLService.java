@@ -15,7 +15,7 @@ public class MySQLService {
         try {
             con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/"+database, user, password);
         } catch (SQLException throwables) {
-            new Console(throwables.getMessage(), ConsoleClassType.MySQL);
+            new Console(throwables.getMessage() + "\n\n\n"+throwables.getStackTrace(), ConsoleClassType.MySQL);
         }
     }
 
