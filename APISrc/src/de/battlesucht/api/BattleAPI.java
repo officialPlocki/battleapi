@@ -11,6 +11,8 @@ import de.battlesucht.api.utils.files.FileBuilder;
 import de.battlesucht.api.utils.mysql.MySQLService;
 import de.battlesucht.api.utils.player.Language;
 import de.battlesucht.api.utils.server.Console;
+import de.battlesucht.api.utils.server.ConsoleClassType;
+import de.battlesucht.api.utils.server.VersionChecker;
 import de.battlesucht.api.utils.server.local.CoinsAPI;
 import de.battlesucht.api.utils.server.local.VaultEconomy;
 import de.battlesucht.api.utils.server.plugin.ListenerManager;
@@ -35,6 +37,8 @@ public class BattleAPI extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Bukkit.broadcastMessage("BattleAPI is loaded for Version "+VersionChecker.getVersion());
+        new Console("BattleAPI is loaded for Version "+VersionChecker.getVersion(), "BattleAPI");
         pl = this;
         fb = new FileBuilder("commands.yml");
         yml = fb.getYaml();
@@ -100,6 +104,7 @@ public class BattleAPI extends JavaPlugin {
         getCommand("gm").setExecutor(new GamemodeCommand());
         getCommand("gamemode").setExecutor(new GamemodeCommand());
         getCommand("gamem").setExecutor(new GamemodeCommand());
+        checkConnection();
     }
 
     @Override
@@ -114,16 +119,12 @@ public class BattleAPI extends JavaPlugin {
     private void checkConnection() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(getInstance(), () -> {
             if(!MySQLService.isConnected()) {
-                Bukkit.getScheduler().runTaskLater(getInstance(), () -> {
-                    if(!MySQLService.isConnected()) {
-                        Bukkit.getServer().broadcastMessage(Language.prefix + "Es ist ein MySQL Fehler aufgetreten. Der Server wird neugestartet.");
-                        Bukkit.getServer().savePlayers();
-                        for(World w : Bukkit.getWorlds()) {
-                            w.save();
-                        }
-                        Bukkit.getServer().shutdown();
-                    }
-                }, 100);
+                Bukkit.getServer().broadcastMessage(Language.prefix + "Es ist ein MySQL Fehler aufgetreten. Der Server wird neugestartet.");
+                Bukkit.getServer().savePlayers();
+                for(World w : Bukkit.getWorlds()) {
+                    w.save();
+                }
+                Bukkit.getServer().shutdown();
             }
         }, 20, 20);
     }
