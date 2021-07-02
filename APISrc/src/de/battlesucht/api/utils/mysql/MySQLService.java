@@ -13,7 +13,7 @@ public class MySQLService {
             return;
         }
         try {
-            con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/"+database, user, password);
+            con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?user=" + user + "&password=" + password + "&autoReconnect=true");
         } catch (SQLException throwables) {
             new Console(throwables.getMessage() + "\n\n\n"+throwables.getStackTrace(), ConsoleClassType.MySQL);
         }

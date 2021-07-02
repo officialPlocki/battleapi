@@ -34,8 +34,11 @@ public class TablistPrefix_16 {
         }
         ScoreboardTeam team = scoreboard.createTeam(s);
         team.setColor(color);
-        team.setPrefix(IChatBaseComponent.ChatSerializer.a(prefix));
-        team.setSuffix(IChatBaseComponent.ChatSerializer.a(suffix));
+        team.setPrefix(new ChatComponentText(prefix));
+
+        if(!suffix.equalsIgnoreCase("")) {
+            team.setSuffix(new ChatComponentText(suffix));
+        }
 
         teams.put(p.getUniqueId(), s);
         update();

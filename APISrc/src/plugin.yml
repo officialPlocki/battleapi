@@ -4,6 +4,7 @@ authors:
   - plocki (https://plocki.xyz/)
 softdepend:
   - Vault
+  - yClans
 api-version: 1.13
 name: BattleAPI
 load: STARTUP

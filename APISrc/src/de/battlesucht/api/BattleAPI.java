@@ -9,6 +9,7 @@ import de.battlesucht.api.utils.events.Join;
 import de.battlesucht.api.utils.events.Quit;
 import de.battlesucht.api.utils.files.FileBuilder;
 import de.battlesucht.api.utils.mysql.MySQLService;
+import de.battlesucht.api.utils.player.Command;
 import de.battlesucht.api.utils.player.Language;
 import de.battlesucht.api.utils.server.Console;
 import de.battlesucht.api.utils.server.ConsoleClassType;
@@ -49,7 +50,7 @@ public class BattleAPI extends JavaPlugin {
         CoinsAPI.setup();
         registerEconomy();
         MySQLService service = new MySQLService();
-        MySQLService.connect("45.155.173.249", "api", "battleapi", ".M7[Tt@@[-C2mEVZ", "3306");
+        MySQLService.connect("51.195.26.1", "bs", "api", "nba./((]C0)gcTxT", "3306");
         if(!MySQLService.isConnected()) {
             new Console("MySQL ist nicht verbunden. API wird deaktiviert.", "BattleAPI.java");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -104,6 +105,7 @@ public class BattleAPI extends JavaPlugin {
         getCommand("gm").setExecutor(new GamemodeCommand());
         getCommand("gamemode").setExecutor(new GamemodeCommand());
         getCommand("gamem").setExecutor(new GamemodeCommand());
+        Bukkit.getPluginManager().registerEvents(new Command(), this);
         checkConnection();
     }
 

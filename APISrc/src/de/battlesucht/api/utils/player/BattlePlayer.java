@@ -1,5 +1,6 @@
 package de.battlesucht.api.utils.player;
 
+import de.battlesucht.api.utils.mysql.MySQLService;
 import de.battlesucht.api.utils.server.VersionChecker;
 import de.battlesucht.api.utils.server.global.BitsAPI;
 import de.battlesucht.api.utils.server.local.CoinsAPI;
@@ -8,6 +9,11 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import yclans.api.yClansAPI;
 import yclans.model.ClanPlayer;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class BattlePlayer {
 
@@ -21,14 +27,11 @@ public class BattlePlayer {
     private net.minecraft.server.v1_16_R3.EnumChatFormat enumChatFormat16;
 
     public BattlePlayer(Player p) {
-        yClansAPI clans = yClansAPI.yclansapi;
-        ClanPlayer cp = clans.getPlayer(p);
-        String clan = cp.getClanTag();
         suffix = "";
-        if(clan != null || !clan.contains("none") || !clan.contains("null") || !clan.contains("[null]")) {
-            suffix = ChatColor.GRAY+"["+ChatColor.GOLD+clan+ChatColor.GRAY+"]";
-        }
         this.player = p;
+        /*if(yClansAPI.yclansapi.containsClan(yClansAPI.yclansapi.getPlayer(player).getClanTag())) {
+            suffix = ChatColor.GRAY+"["+ChatColor.GOLD+yClansAPI.yclansapi.getPlayer(player).getClanTag()+ChatColor.GRAY+"] "+ChatColor.RESET;
+        }*/
         if(p.hasPermission("rank.owner")) {
             prefix = "&4Owner &8┃ &4";
             height = 0;

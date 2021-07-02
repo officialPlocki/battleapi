@@ -35,7 +35,9 @@ public class TablistPrefix_12 {
         ScoreboardTeam team = scoreboard.createTeam(s);
         team.setColor(color);
         team.setPrefix(prefix);
-        team.setSuffix(suffix);
+        if(!suffix.equalsIgnoreCase("")) {
+            team.setSuffix(suffix);
+        }
 
         teams.put(p.getUniqueId(), s);
         update();
