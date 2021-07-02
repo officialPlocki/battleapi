@@ -10,8 +10,8 @@
     <orderEntry type="library" name="spigot-1.12.2" level="project" />
     <orderEntry type="library" name="Vault" level="project" />
     <orderEntry type="library" name="bukkit-1.8.8" level="project" />
-    <orderEntry type="library" name="bukkit-1.16.5" level="project" />
     <orderEntry type="library" name="yClans" level="project" />
     <orderEntry type="library" name="yClans-API" level="project" />
+    <orderEntry type="library" name="bukkit-1.16.5" level="project" />
   </component>
 </module>
